@@ -1,11 +1,19 @@
 import { FaGithub } from "react-icons/fa";
 import { useFetch } from "./hooks/useFetch";
+import { useState } from "react";
 
 
 function App() {
-  const { loading, data, error } = useFetch(`https://api.github.com/users/abdul`)
 
   //const searchBar = document.getElementById("search-bar").value;
+
+  const [searchBar, setSearchBar] = useState("");
+  const { loading, data, error } = useFetch(`https://api.github.com/users/${searchBar}`)
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //useFetch(`https://api.github.com/users/${searchBar}`);
+  };
 
   if (loading) return <h1>Loading...</h1>
 
@@ -23,9 +31,19 @@ function App() {
           <div className="ms-3 d-inline">Github</div>
         </a>
         <div className="collapse navbar-collapse  d-flex justify-content-end" id="navbarSupportedContent">
-          <form className="d-flex" role="search">
-            <input id="search-bar" className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button className="btn btn-outline-success" type="submit">Search</button>
+          <form 
+          onSubmit={handleSubmit} 
+          className="d-flex" 
+          role="search">
+            <input 
+            id="search-bar" 
+            className="form-control me-2" 
+            type="search" 
+            placeholder="Search" 
+            aria-label="Search"
+            value={searchBar}
+            onChange={(e) => setSearchBar(e.target.value)}/>
+            <button className="btn btn-outline-success" type="submit" >Search</button>
           </form>
         </div>
       </div>
